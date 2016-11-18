@@ -1,0 +1,25 @@
+import mediacloud, datetime
+import json, ast 
+
+mc = mediacloud.api.MediaCloud('API KEY')
+wordsC = mc.wordCount('( Clinton )',  solr_filter=[mc.publish_date_query( datetime.date( 2016, 7, 1), datetime.date( 2016, 8, 1) ), 'tags_id_media:1' ] )
+wordsT = mc.wordCount('( Trump )',  solr_filter=[mc.publish_date_query( datetime.date( 2016, 7, 1), datetime.date( 2016, 8, 1) ), 'tags_id_media:1' ] )
+
+wC= wordsC[0]  #prints the most common word
+dictC =  ast.literal_eval(json.dumps(wC))
+numClintMent = dictC['count']   
+print numClintMent
+
+
+wT= wordsT[0]  #prints the most common word
+dictT =  ast.literal_eval(json.dumps(wT))
+numTrumMent = dictT['count']  
+print numTrumMent
+
+if (numClintMent > numTrumMent):
+    
+    print "In the month of September Clinton was mentioned more then Trump in the media"
+    
+else:
+    
+    print "In the month of September Trump was mentioned more then Clnton in the media"
