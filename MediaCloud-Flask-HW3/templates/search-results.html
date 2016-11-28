@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-12">
+  
+    <h3>Search Results</h3>
+
+    <p>You searched for "{{keywords}}"</p>
+
+    <p>In the US Mainstream Media online there have {{ sentenceCount }} sentences matching your search so far this year.</p>
+
+  </div>
+
+</div>  
+<meta charset="utf-8">
+<script src="https://code.jquery.com/jquery-1.11.0.js"
+  integrity="sha256-zgND4db0iXaO7v4CLBIYHGoIIudWI5hRMQrPB20j0Qw="
+  crossorigin="anonymous"></script>
+      
+
+<!-- load D3js -->
+<script src="//d3plus.org/js/d3.js"></script>
+
+<!-- load D3plus after D3js -->
+<script src="//d3plus.org/js/d3plus.js"></script>
+
+<!-- create container element for visualization -->
+<div id="viz"></div>
+
+<script>
+$(document).ready( function start() {
+      var sample_data = "{{ sentenceCount2 }}";
+      var newData =  decodeJSON(sample_data);
+    
+    
+      var val_test = [
+    {"year": 1991, "name":"alpha", "value": 17},
+    {"year": 1992, "name":"alpha", "value": 20},
+    {"year": 1993, "name":"alpha", "value": 25},
+    {"year": 1994, "name":"alpha", "value": 33},
+    {"year": 1995, "name":"alpha", "value": 52},
+    {"year": 1991, "name":"beta", "value": 36},
+    {"year": 1992, "name":"beta", "value": 32},
+    {"year": 1993, "name":"beta", "value": 40},
+    {"year": 1994, "name":"beta", "value": 58},
+    {"year": 1995, "name":"beta", "value": 13},
+    {"year": 1991, "name":"gamma", "value": 24},
+    {"year": 1992, "name":"gamma", "value": 27},
+    {"year": 1994, "name":"gamma", "value": 35},
+    {"year": 1995, "name":"gamma", "value": 40}
+  ]
+    // console.log(newData);
+    //console.log(val_test);
+    var dViz = [];
+    //var nameSearched =  String({{keywords}})
+    for(var i=0; i<newData.length; i++) {
+        
+        var var1 = newData[i];
+        var varYear = var1.year.split('-');
+        var intValue =  parseInt(var1.value);
+        var intYear = parseInt(varYear[0]);
+        var dataTOViz = {};
+        var dataName = "{{keywords}}"
+        dataTOViz.value = intValue;
+        dataTOViz.year = intYear;
+        dataTOViz.name = dataName;
+
+       // var1.value = intValue;
+       // var1.year = intYear;
+        dViz.push(dataTOViz);
+        
+        //var1[i].push(var1.value)
+       // var1[i].push(var1.year)
+
+        //console.log(var1.value);
+        //console.log(var1);
+
+
+    }
+        console.log(dViz);
+
+      //console.log(Object.keys(newData));
+    var visualization = d3plus.viz()
+   .container("#viz")  // container DIV to hold the visualization
+   .data(dViz)  // data to use with the visualization
+   .type("line")       // visualization type
+   .id("name")         // key for which our data is unique on
+   .text("name")       // key to use for display text
+   .y("value")         // key to use for y-axis
+   .x("year")          // key to use for x-axis
+   .draw()             // finally, draw the visualization!
+  
+});
+ 
+
+  //var parsed = JSON.parse(sample_data);                 
+  function decodeJSON(encodedJSON) {
+  var decodedJSON = $('<div>').html(encodedJSON).text();
+
+  return $.parseJSON(decodedJSON);
+ }
+
+
+
+  // instantiate d3plus
+ 
+</script>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
